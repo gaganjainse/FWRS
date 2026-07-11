@@ -1,0 +1,7 @@
+restaurant_id,ngo_id,amount,cost_per_unit
+R1,N1,57,0
+R1,N3,23,3.6888
+R2,N2,38,0.1164
+R2,N4,12,2.4671
+R3,N3,24,2.2362
+R3,N4,16,2.6363

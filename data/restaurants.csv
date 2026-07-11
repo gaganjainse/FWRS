@@ -1,0 +1,4 @@
+id,name,lat,lon,supply,expiry_hours
+R1,Resto A,12.9716,77.5946,80,1.5
+R2,Resto B,12.9352,77.6245,50,4
+R3,Resto C,12.9200,77.6100,40,0.75

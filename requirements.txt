@@ -1,0 +1,7 @@
+pulp
+flask
+matplotlib
+networkx
+mplcursors
+folium
+branca

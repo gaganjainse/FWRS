@@ -1,0 +1,5 @@
+id,name,lat,lon,demand,priority
+N1,NGO Alpha,12.9860,77.6040,60,5
+N2,NGO Beta,12.9500,77.6200,40,4
+N3,NGO Gamma,12.9300,77.5800,50,3
+N4,NGO Delta,12.9100,77.6400,30,2

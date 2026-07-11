@@ -1,0 +1,10 @@
+metric,value
+supply,170
+demand,180
+delivered,170
+delivered_pct,94.44444444
+unused_supply,0
+unmet_demand,10
+avg_cost_per_unit,1.263069984
+total_cost,214.7218973
+min_fill_ratio,0.933333333
