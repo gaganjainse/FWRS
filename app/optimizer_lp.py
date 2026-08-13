@@ -21,6 +21,9 @@ def fairness_stage(R: List[Restaurant], N: List[NGO]) -> Tuple[Dict[Tuple[int,in
 
     for j in J:
         prob += pl.lpSum(x[i][j] for i in I) >= t * N[j].demand
+        # Cap each NGO at its demand — without this, surplus supply over-allocates
+        # (the solver sets x=supply AND t=1 when supply > demand).
+        prob += pl.lpSum(x[i][j] for i in I) <= N[j].demand
 
     for i in I:
         prob += pl.lpSum(x[i][j] for j in J) <= R[i].supply

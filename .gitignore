@@ -5,3 +5,9 @@ __pycache__/
 .env
 venv/
 env/
+
+# generated outputs (reproducible: python main.py --export ... / ui/map_generator.py)
+map.html
+allocs.csv
+summary.csv
+bangalore_dataset/
