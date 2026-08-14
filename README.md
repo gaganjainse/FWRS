@@ -5,7 +5,7 @@ An optimization platform that allocates surplus food from restaurants to NGOs us
 minimizing waste while maximizing social impact.
 
 ![Python](https://img.shields.io/badge/Python-3.12%2B-blue?style=for-the-badge&logo=python)
-![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+![License](https://img.shields.io/badge/License-GPL--3.0--or--later-blue?style=for-the-badge)
 ![Tests](https://img.shields.io/badge/Tests-18-success?style=for-the-badge)
 ![CI](https://github.com/gaganjainse/FWRS/actions/workflows/ci.yml/badge.svg)
 
@@ -81,4 +81,4 @@ ruff check app/ ui/ tests/    # lint
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+GPL-3.0-or-later — see [LICENSE](LICENSE).
