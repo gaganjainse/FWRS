@@ -7,7 +7,7 @@ minimizing waste while maximizing social impact.
 ![Python](https://img.shields.io/badge/Python-3.12%2B-blue?style=for-the-badge&logo=python)
 ![License](https://img.shields.io/badge/License-GPL--3.0--or--later-blue?style=for-the-badge)
 ![Tests](https://img.shields.io/badge/Tests-18-success?style=for-the-badge)
-![CI](https://github.com/gaganjainse/FWRS/actions/workflows/ci.yml/badge.svg)
+![CI](https://img.shields.io/github/actions/workflow/status/gaganjainse/FWRS/ci.yml?style=for-the-badge&label=CI)
 
 - **License:** GPL-3.0-or-later
 - **Owner:** Gagan Jain ([@gaganjainse](https://github.com/gaganjainse))
