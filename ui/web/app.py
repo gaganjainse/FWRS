@@ -64,4 +64,6 @@ def index():
     return render_template_string(TPL, alpha=alpha, allocations=allocations, metrics=metrics)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # debug off unless explicitly enabled — the Werkzeug debugger allows
+    # arbitrary code execution (bandit B201 / CodeQL py/flask-debug).
+    app.run(debug=os.environ.get("FLASK_DEBUG", "0") in ("1", "true", "yes"))
