@@ -1,101 +1,84 @@
-# Food Waste Reduction System (FWRS)
+# 🥗 FWRS — Food Waste Reduction System
 
-An optimization platform that allocates surplus food from restaurants to NGOs using linear programming, minimizing waste while maximizing social impact.
+An optimization platform that allocates surplus food from restaurants to NGOs using
+**linear programming** — a 3-stage lexicographic solver (fairness → priority → cost) —
+minimizing waste while maximizing social impact.
+
+![Python](https://img.shields.io/badge/Python-3.12%2B-blue?style=for-the-badge&logo=python)
+![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+![Tests](https://img.shields.io/badge/Tests-18-success?style=for-the-badge)
+![CI](https://github.com/gaganjainse/FWRS/actions/workflows/ci.yml/badge.svg)
+
+## Quick start
+
+```bash
+pip install -r requirements.txt
+
+# CLI
+python main.py --export allocations.csv --export-summary summary.csv
+
+# Web dashboard (Flask)
+python -m flask --app ui.web.app run
+
+# Desktop GUI (Tkinter)
+python ui/desktop_app.py
+```
+
+## Optimization pipeline
+
+| Stage | Objective | Description |
+|---|---|---|
+| 1. **Fairness** | max-min fill ratio | maximize the minimum fraction of demand met across NGOs |
+| 2. **Priority** | tiered allocation | higher-priority NGOs filled first, tier by tier |
+| 3. **Cost** | minimize cost | distance-based cost with **expiry-aware penalty** (travel time vs shelf life) |
+
+The `alpha` parameter weighs priority in the cost stage (0 = pure distance).
 
 ## Features
 
-- **Multi-stage LP optimization** — 3-stage lexicographic solver: fairness → priority → cost
+- **3-stage lexicographic LP** — fairness → priority → cost (PuLP/CBC)
 - **Expiry-aware routing** — penalizes allocations where travel time exceeds food shelf life
-- **Priority-weighted distribution** — NGOs ranked by priority (1–5); configurable via `alpha` parameter
-- **Interactive map** — Folium/Leaflet map with animated routes, heatmap, and priority-colored markers
+- **Priority-weighted distribution** — NGOs ranked 1–5; configurable via `alpha`
+- **Interactive map** — Folium/Leaflet with animated routes, heatmap, priority-colored markers
 - **Desktop GUI** — Tkinter dark-mode app with matplotlib charts and bipartite allocation graph
-- **Web dashboard** — Flask web app to run LP and download results as CSV
-- **CSV export** — allocations and summary metrics saved as CSV files
-- **Built-in dataset** — 100 restaurants and 80 NGOs in Bangalore, India
+- **Web dashboard** — Flask app to run the LP and download results as CSV
+- **CSV export** — allocations and summary metrics
 
 ## Architecture
 
-```
+```text
 app/                Core logic: models, data loader, distance, LP optimizer, evaluator, exporter
 ui/                 Interfaces: desktop (Tkinter), web (Flask), map generator (Folium)
-data/               Default small dataset (3 restaurants, 4 NGOs)
-bangalore_dataset/  Realistic Bangalore dataset (100 restaurants, 80 NGOs)
-tests/              Unit tests
+data/               Default dataset (restaurants.csv, ngos.csv — committed, used by tests + demo)
+tests/              18 tests — pipeline end-to-end, expiry routing, haversine, loading, metrics, export
 main.py             CLI entry point
 run_all.py          Interactive launcher menu
 ```
 
-### Optimization Pipeline
+```mermaid
+---
+title: FWRS allocation pipeline
+---
+graph LR
+    D["📊 Data<br/>restaurants + NGOs"] --> F["⚖️ Fairness stage"]
+    F --> P["🎖️ Priority stage"]
+    P --> C["💰 Cost stage<br/>expiry-aware"]
+    C --> A["✅ Allocations"]
+    A --> EV["📈 Evaluate<br/>fill ratio, unmet, unused"]
+    A --> EX["📤 Export CSV"]
+```
 
-| Stage | Objective | Description |
-|-------|-----------|-------------|
-| 1 — Fairness | Maximize minimum NGO fill ratio | Ensures every NGO gets a fair share |
-| 2 — Priority | Maximize allocation in each priority tier | Higher-priority NGOs get preference |
-| 3 — Cost | Minimize transport cost | Distance minus priority bonus, plus expiry penalties |
+> Note: the large Bangalore demo dataset and generated map/CSV outputs are **not
+> committed** (they're reproducible via `main.py` / `ui/map_generator.py` and
+> gitignored). The committed `data/` set is small and deterministic for tests.
 
-## Quick Start
+## Development
 
 ```bash
-# 1. Create and activate virtual environment
-python -m venv .venv
-.venv\Scripts\activate       # Windows
-source .venv/bin/activate    # Linux/macOS
-
-# 2. Install dependencies
-pip install -r requirements.txt
-
-# 3. Launch the interactive menu
-python run_all.py
-```
-
-### Menu Options
-
-1. **Desktop GUI** — Tkinter dark-mode application with charts
-2. **Web App** — Flask dashboard on `http://127.0.0.1:5000`
-3. **Generate Map** — Creates `map.html` and opens it in your browser
-4. **Run LP + Export CSV** — Saves `allocs.csv` and `summary.csv`
-5. **Install/Update Requirements**
-6. **Exit**
-
-### Direct Usage
-
-```bash
-# CLI with custom priority weight
-python main.py --alpha 0.6 --export allocs.csv --export-summary summary.csv
-
-# Generate map only
-python ui/map_generator.py
-
-# Run web app
-python -m flask --app ui.web.app run
-```
-
-## Dependencies
-
-| Package     | Purpose                          |
-|-------------|----------------------------------|
-| pulp        | LP solver (CBC)                 |
-| flask       | Web UI                          |
-| matplotlib  | Charts in desktop GUI           |
-| networkx    | Bipartite allocation graph      |
-| mplcursors  | Interactive chart tooltips      |
-| folium      | Interactive map (Leaflet.js)    |
-| branca      | Folium legend utilities         |
-
-## Data Format
-
-### restaurants.csv
-```csv
-id,name,lat,lon,supply,expiry_hours
-R1,Resto A,12.9715,77.5945,80,1.5
-```
-
-### ngos.csv
-```csv
-id,name,lat,lon,demand,priority
-N1,NGO Alpha,12.9344,77.6101,60,5
+pytest -q                     # 18 tests
+ruff check app/ ui/ tests/    # lint
 ```
 
 ## License
 
-Apache 2.0 — see [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).
